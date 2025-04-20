@@ -1,0 +1,223 @@
+@font-face {
+  font-family: Oxanium;
+  src: url(Oxanium-VariableFont_wght.ttf);
+}
+@font-face {
+  font-family: Poppins;
+  src: url(Poppins-Regular.ttf);
+}
+:root {
+  /* Primary Colors */
+  --primary: #6a5acd; /* Slate Blue (main brand color) */
+  --primary-light: #9370db; /* Medium Purple */
+  --primary-pale: #e6e6fa; /* Lavender (backgrounds) */
+
+  /* Secondary Colors */
+  --secondary: #48d1cc; /* Medium Turquoise */
+  --secondary-light: #afeeee; /* Pale Turquoise */
+
+  /* Accents */
+  --accent: #ff69b4; /* Hot Pink */
+  --accent-light: #ffb6c1; /* Light Pink */
+
+  /* Neutrals */
+  --light: #ffffff; /* Pure White */
+  --light-gray: #f8f9fa; /* Off-White */
+  --medium-gray: #e9ecef; /* Light Gray */
+  --dark: #495057; /* Dark Gray (for text) */
+
+  /* Status Colors */
+  --success: #28a745; /* Green */
+  --danger: #dc3545; /* Red */
+  --warning: #ffc107; /* Yellow */
+  --info: #17a2b8; /* Teal */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: var(--primary-pale); /* Lavender */
+  color: var(--dark); /* Dark Gray for text */
+  background-image: radial-gradient(
+      circle at 25% 25%,
+      rgba(108, 92, 231, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 75% 75%,
+      rgba(0, 206, 201, 0.1) 0%,
+      transparent 50%
+    );
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Oxanium", sans-serif;
+  font-weight: 700;
+  color: var(--primary); /* Slate Blue for headings */
+}
+
+a {
+  color: var(--secondary);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.btn {
+  font-family: "Oxanium", sans-serif;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 50px;
+  padding: 10px 25px;
+  transition: all 0.3s ease;
+  border: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  /* color: white; */
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(106, 90, 205, 0.4);
+}
+
+.btn-outline-primary {
+  color: var(--primary);
+  border-color: var(--primary);
+  background: transparent;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Glow effect for important elements */
+.glow {
+  animation: glow 2s ease-in-out infinite alternate;
+  box-shadow: 0 0 10px rgba(106, 90, 205, 0.3);
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px rgba(108, 92, 231, 0.5);
+  }
+  to {
+    box-shadow: 0 0 20px rgba(108, 92, 231, 0.8);
+  }
+}
+
+/* Neon text effect */
+.neon-text {
+  text-shadow: 0 0 5px var(--primary), 0 0 10px var(--primary),
+    0 0 15px var(--primary);
+}
+
+/* Pulse animation */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Add some subtle particle animation */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='1' fill='%236c5ce7' fill-opacity='0.1'/%3E%3C/svg%3E");
+  z-index: -1;
+  pointer-events: none;
+  animation: particles 100s linear infinite;
+}
+
+@keyframes particles {
+  from {
+    transform: translateY(0) translateX(0);
+  }
+  to {
+    transform: translateY(-1000px) translateX(-500px);
+  }
+}
+/* Page container styles */
+.page-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Specific page adjustments */
+.dashboard-content {
+  width: 100%;
+}
+
+/* Tournament list adjustments */
+.tournament-list-container {
+  width: 100%;
+}
+/* Ensure all cards are properly centered */
+.card {
+  margin: 0 auto;
+}
+
+/* Form centering */
+.auth-container,
+.create-tournament-form {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .layout-main-content {
+    padding: 1rem;
+  }
+
+  .page-container {
+    padding: 0 0.5rem;
+  }
+}

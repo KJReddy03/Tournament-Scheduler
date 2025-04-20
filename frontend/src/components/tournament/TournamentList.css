@@ -1,0 +1,104 @@
+.card {
+  background-color: var(--light); /* White */
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  overflow: hidden;
+  border: 1px solid rgba(108, 92, 231, 0.2);
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(108, 92, 231, 0.3);
+  border-color: var(--primary);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+
+.card-body {
+  padding: 25px;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: var(--light);
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.card-subtitle {
+  font-size: 1rem;
+  margin-bottom: 15px;
+  color: var(--secondary);
+}
+
+.card-text {
+  margin-bottom: 10px;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.card-text strong {
+  color: var(--secondary);
+}
+
+/* Status badges */
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.status-upcoming {
+  background-color: rgba(255, 193, 7, 0.1);
+  color: var(--warning);
+  border: 1px solid var(--warning);
+}
+
+.status-ongoing {
+  background-color: rgba(40, 167, 69, 0.1);
+  color: var(--success);
+  border: 1px solid var(--success);
+}
+
+.status-completed {
+  background-color: rgba(214, 48, 49, 0.2);
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+.h-100 {
+  max-width: 250px;
+}
+.row {
+  display: flex;
+  margin-top: 2rem;
+}
+.head-cont {
+  margin: 10px;
+}
+.elem {
+  text-align: center;
+}
+.data {
+  margin: 10px;
+}
+.view-details {
+  margin-top: 10px;
+  padding: 10px 0px;
+}

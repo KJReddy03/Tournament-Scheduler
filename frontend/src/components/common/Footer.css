@@ -1,0 +1,21 @@
+.foot {
+  background-color: var(--light); /* White */
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--medium-gray);
+  padding: 25px 0;
+  margin-top: 20px;
+}
+
+.foot p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.foot::before {
+  content: "";
+  display: block;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  margin-bottom: 20px;
+}

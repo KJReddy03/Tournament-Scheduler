@@ -1,0 +1,114 @@
+.tournament-details {
+  background: rgba(45, 52, 54, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(108, 92, 231, 0.3);
+}
+
+.tournament-details .card-header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  padding: 25px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.tournament-details .card-header h2 {
+  font-size: 2.2rem;
+  margin-bottom: 10px;
+}
+
+.tournament-details .card-header h5 {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+.tournament-details .card-body {
+  padding: 30px;
+}
+
+.participants-list {
+  margin-top: 30px;
+}
+
+.participants-list h4 {
+  margin-bottom: 20px;
+  color: var(--secondary);
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.participants-list h4::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+
+.list-group-item {
+  background-color: rgba(85, 85, 85, 0.249);
+  color: rgb(39, 38, 38);
+  border: 1px solid rgba(108, 92, 231, 0.2);
+  margin-bottom: 10px;
+  border-radius: 10px !important;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.list-group-item:hover {
+  background-color: rgba(108, 92, 231, 0.1);
+  transform: translateX(5px);
+}
+
+.list-group-item.active {
+  background-color: var(--primary-light);
+  border-color: var(--primary);
+}
+
+/* Status indicators */
+.status-registered {
+  color: var(--warning);
+}
+
+.status-active {
+  color: var(--success);
+}
+
+.status-eliminated {
+  color: var(--danger);
+}
+
+.status-winner {
+  color: var(--primary);
+  font-weight: bold;
+}
+.head {
+  text-align: center;
+}
+.col-md-6 p {
+  margin: 10px;
+}
+.part {
+  text-align: center;
+  margin-bottom: 10px;
+}
+.col-md-8 {
+  margin-left: 30px;
+  margin-right: 30px;
+}
+.alert-info {
+  color: rgb(101, 204, 63);
+}
+.join {
+  position: absolute;
+  right: 40px;
+}

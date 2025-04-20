@@ -1,0 +1,121 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 20px;
+}
+
+.auth-card {
+  background-color: var(--light); /* White */
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(108, 92, 231, 0.3);
+}
+
+.auth-header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  padding: 25px;
+  text-align: center;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-header h2 {
+  font-size: 2rem;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.auth-header::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 70%
+  );
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.auth-body {
+  padding: 30px;
+  text-align: center;
+}
+
+.form-control {
+  background-color: var(--light-gray);
+  border: 1px solid var(--medium-gray);
+  color: var(--dark);
+  border-radius: 15px;
+  padding: 12px 15px;
+  transition: all 0.3s ease;
+  width: 300px;
+}
+
+.form-control:focus {
+  background-color: rgba(245, 246, 250, 0.2);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 0.25rem rgba(108, 92, 231, 0.25);
+  color: rgb(0, 0, 0);
+}
+
+.form-label {
+  color: var(--secondary);
+  margin-bottom: 8px;
+  display: block;
+  font-weight: 500;
+  margin-top: 5px;
+}
+
+.alert {
+  border-radius: 10px;
+  padding: 12px 15px;
+  margin-bottom: 20px;
+}
+
+.auth-footer {
+  text-align: center;
+  padding: 15px;
+  background-color: rgba(45, 52, 54, 0.6);
+  border-top: 1px solid rgba(108, 92, 231, 0.2);
+}
+
+/* Input placeholder color */
+::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+.btn-primary {
+  margin-top: 10px;
+}
+.password-toggle-btn {
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* For better input field appearance with the button */
+input[type="password"],
+input[type="text"] {
+  padding-right: 40px !important;
+}
