@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../../redux/actions/authActions";
@@ -8,11 +8,24 @@ const Navbar = () => {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const handleLogout = () => {
     dispatch(logoutUser());
     navigate("/");
   };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -24,6 +37,8 @@ const Navbar = () => {
                 🎮Tournament Scheduler
               </Link>
             </li>
+          </ul>
+          <ul className="link-content">
             <li className="nav-item">
               <Link className="nav-link" to="/">
                 Home
@@ -60,22 +75,41 @@ const Navbar = () => {
                 )}
               </>
             )}
-          </ul>
-          <ul className="navbar-nav">
             {isAuthenticated ? (
               <>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/welcome">
-                    Welcome {user?.username}
-                  </Link>
-                </li>
-                <li className="nav-item">
+                <li className="nav-item dropdown" ref={dropdownRef}>
                   <button
-                    className="button btn btn-outline-light"
-                    onClick={handleLogout}
+                    className="btn-outline-light btn dropdown-toggle"
+                    onClick={() => setOpen(!open)}
                   >
-                    Logout
+                    {user?.username.charAt(0).toUpperCase()}
                   </button>
+                  {open && (
+                    <div className="dropdown-menu show-dropdown">
+                      <ul>
+                        <li>
+                          <Link
+                            className="dropdown-link"
+                            to="/welcome"
+                            onClick={() => setOpen(false)}
+                          >
+                            Welcome {user?.username}
+                          </Link>
+                        </li>
+                        <li>
+                          <button
+                            className="dropdown-link logout-btn"
+                            onClick={() => {
+                              handleLogout();
+                              setOpen(false);
+                            }}
+                          >
+                            Logout
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
                 </li>
               </>
             ) : (

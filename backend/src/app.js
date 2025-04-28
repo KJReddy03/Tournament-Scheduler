@@ -19,7 +19,7 @@ app.use(express.json());
 // Routes
 app.use("/api/admin", adminRoutes);
 app.use("/api/auth", authRoutes);
-app.use("/api", tournamentRoutes);
+app.use("/api/tournaments", tournamentRoutes);
 
 // Database sync
 sequelize.sync({ force: false, alter: false }).then(() => {

@@ -5,7 +5,12 @@ const Footer = () => {
   return (
     <footer className="foot bg-dark text-white mt-5 p-4 text-center">
       <div className="container">
-        <p>Gaming Tournament Scheduler &copy; {new Date().getFullYear()}</p>
+        <h3 className="conTitle">Contact:</h3>
+        <p className="contact">
+          <a href="keerthanreddy.j139@ptuniv.edu.in">mail</a>
+          <a href="https://github.com/KJReddy03">github</a>
+          <a href="https://www.instagram.com/keerthan.reddy.j/">instagram</a>
+        </p>
       </div>
     </footer>
   );

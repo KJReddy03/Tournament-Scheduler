@@ -1,4 +1,3 @@
-// src/components/admin/AdminUpdateResults.js
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTournaments } from "../../redux/actions/tournamentActions";

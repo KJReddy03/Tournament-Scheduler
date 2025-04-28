@@ -9,6 +9,7 @@ module.exports = (sequelize) => {
     endDate: { type: DataTypes.DATE, allowNull: false },
     maxParticipants: { type: DataTypes.INTEGER, allowNull: false },
     status: { type: DataTypes.STRING, defaultValue: "upcoming" },
+    creatorId: { type: DataTypes.INTEGER, allowNull: false },
   });
 
   return Tournament;

@@ -1,6 +1,6 @@
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
-import { User } from "../config/db.config.js"; // ✅ make sure this matches your structure
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const { User } = require("../config/db.config");
 
 export const login = async (req, res) => {
   try {

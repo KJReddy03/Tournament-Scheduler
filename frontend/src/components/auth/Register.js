@@ -129,26 +129,26 @@ const Register = () => {
               <label htmlFor="password" className="form-label">
                 Password
               </label>
-              <input
-                type={showPassword ? "text" : "password"}
-                className={`form-control ${
-                  errors.password ? "is-invalid" : ""
-                }`}
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-              />
-              {errors.password && (
-                <div className="invalid-feedback">{errors.password}</div>
-              )}
-              <button
-                type="button"
-                className="password-toggle-btn"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? "👁️" : "👁️‍🗨️"}
-              </button>
+              <div className="passContain">
+                <input
+                  placeholder="(Minimun 6 characters)"
+                  type={showPassword ? "text" : "password"}
+                  className={`form-control ${
+                    errors.password ? "is-invalid" : ""
+                  }`}
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+                {errors.password && (
+                  <div className="invalid-feedback">{errors.password}</div>
+                )}
+                <i
+                  className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
+                  onClick={() => setShowPassword(!showPassword)}
+                ></i>
+              </div>
             </div>
 
             <div className="mb-3">
@@ -156,6 +156,7 @@ const Register = () => {
                 Confirm Password
               </label>
               <input
+                placeholder="(Minimun 6 characters)"
                 type="password"
                 className={`form-control ${
                   errors.confirmPassword ? "is-invalid" : ""

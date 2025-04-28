@@ -3,7 +3,7 @@
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--medium-gray);
   padding: 25px 0;
-  margin-top: 20px;
+  margin-top: 0px;
 }
 
 .foot p {
@@ -18,4 +18,11 @@
   height: 2px;
   background: linear-gradient(90deg, transparent, var(--primary), transparent);
   margin-bottom: 20px;
+}
+.contact a {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.conTitle {
+  padding-bottom: 10px;
 }
