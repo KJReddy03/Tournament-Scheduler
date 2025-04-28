@@ -112,3 +112,7 @@
   position: absolute;
   right: 40px;
 }
+.card-img-top {
+  max-height: 300px;
+  width: 100%;
+}

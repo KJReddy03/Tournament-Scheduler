@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const cors = require("cors");
 const { sequelize } = require("./config/db.config");
 const authRoutes = require("./routes/auth.routes");
@@ -7,6 +8,10 @@ const adminRoutes = require("./routes/admin.routes");
 
 const app = express();
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use("/images", express.static(path.join(__dirname, "../public/images")));
+
 // Middleware
 app.use(
   cors({
@@ -14,7 +19,6 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.json());
 
 // Routes
 app.use("/api/admin", adminRoutes);

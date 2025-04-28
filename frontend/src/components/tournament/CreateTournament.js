@@ -12,45 +12,57 @@ const CreateTournament = () => {
     endDate: "",
     maxParticipants: 0,
   });
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, error } = useSelector((state) => state.tournaments);
 
+  const gameOptions = [
+    "Valorant",
+    "CSGO",
+    "FIFA",
+    "Dota 2",
+    "BGMI",
+    "FallGuys",
+    "Free Fire",
+    "Pubg PC",
+    "Apex Legends",
+    "Call of Duty",
+    "League of Legends",
+    "Rocket League",
+    "Clash Royale",
+    "Clash of Clans",
+    "Fortnite",
+    "Brawlhalla",
+  ];
+
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add validation
-    if (
-      !formData.name ||
-      !formData.game ||
-      !formData.startDate ||
-      !formData.endDate
-    ) {
-      alert("Please fill all required fields");
+    const { name, game, startDate, endDate, maxParticipants } = formData;
+
+    if (!name || !game || !startDate || !endDate || !maxParticipants) {
+      alert("Please fill all fields");
       return;
     }
+
+    const data = new FormData();
+    data.append("name", name);
+    data.append("game", game);
+    data.append("startDate", new Date(startDate).toISOString());
+    data.append("endDate", new Date(endDate).toISOString());
+    data.append("maxParticipants", maxParticipants);
+
     try {
-      await dispatch(
-        createTournament({
-          name: formData.name,
-          game: formData.game,
-          startDate: new Date(formData.startDate).toISOString(),
-          endDate: new Date(formData.endDate).toISOString(),
-          maxParticipants: parseInt(formData.maxParticipants) || 0,
-        })
-      );
+      await dispatch(createTournament(data));
       navigate("/tournaments");
     } catch (error) {
-      console.error(
-        "Create tournament failed:",
-        error.response?.data || error.message
-      );
+      console.error("Create tournament failed:", error);
+      alert(error?.response?.data?.message || "Tournament creation failed");
     }
   };
 
@@ -65,7 +77,7 @@ const CreateTournament = () => {
             <div className="card-body">
               {error && <div className="alert alert-danger">{error}</div>}
               <form onSubmit={handleSubmit}>
-                <div className="mb-3 form-row">
+                <div className="mb-3">
                   <label htmlFor="name" className="form-label">
                     Tournament Name
                   </label>
@@ -79,21 +91,29 @@ const CreateTournament = () => {
                     required
                   />
                 </div>
-                <div className="mb-3 form-row">
+
+                <div className="mb-3">
                   <label htmlFor="game" className="form-label">
-                    Game
+                    Select Game
                   </label>
-                  <input
-                    type="text"
+                  <select
                     className="form-control"
                     id="game"
                     name="game"
                     value={formData.game}
                     onChange={handleChange}
                     required
-                  />
+                  >
+                    <option value="">-- Select a Game --</option>
+                    {gameOptions.map((game) => (
+                      <option key={game} value={game}>
+                        {game}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-                <div className="row mb-3 form-row">
+
+                <div className="row mb-3">
                   <div className="col-md-6">
                     <label htmlFor="startDate" className="form-label">
                       Start Date
@@ -123,7 +143,8 @@ const CreateTournament = () => {
                     />
                   </div>
                 </div>
-                <div className="mb-3 form-row ">
+
+                <div className="mb-3">
                   <label htmlFor="maxParticipants" className="form-label">
                     Max Participants
                   </label>
@@ -138,6 +159,7 @@ const CreateTournament = () => {
                     required
                   />
                 </div>
+
                 <button
                   type="submit"
                   className="btn btn-primary w-100"

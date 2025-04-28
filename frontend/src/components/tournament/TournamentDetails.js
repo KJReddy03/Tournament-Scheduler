@@ -54,6 +54,14 @@ const TournamentDetails = () => {
 
           {currentTournament && (
             <div className="card">
+              {currentTournament.image && (
+                <img
+                  src={`http://localhost:5000${currentTournament.image}`}
+                  alt={currentTournament.name}
+                  className="card-img-top"
+                  style={{ maxHeight: "300px", objectFit: "cover" }}
+                />
+              )}
               <div className="card-header head">
                 <h2>{currentTournament.name}</h2>
                 <h5 className="text-muted">{currentTournament.game}</h5>
