@@ -87,9 +87,7 @@
   display: inline;
   max-width: 100px;
 }
-.navbar-nav {
-  display: inline-block;
-}
+
 .navbar-collapse {
   text-align: center;
 }
