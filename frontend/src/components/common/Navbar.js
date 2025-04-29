@@ -97,6 +97,16 @@ const Navbar = () => {
                           </Link>
                         </li>
                         <li>
+                          <Link className="dropdown-link" to="/teams">
+                            My Teams
+                          </Link>
+                        </li>
+                        <li>
+                          <Link className="dropdown-link" to="/teams/create">
+                            Create Team
+                          </Link>
+                        </li>
+                        <li>
                           <button
                             className="dropdown-link logout-btn"
                             onClick={() => {

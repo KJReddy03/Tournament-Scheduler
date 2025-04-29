@@ -5,8 +5,8 @@ const { sequelize } = require("./config/db.config");
 const authRoutes = require("./routes/auth.routes");
 const tournamentRoutes = require("./routes/tournament.routes");
 const adminRoutes = require("./routes/admin.routes");
-
 const app = express();
+const teamRoutes = require("./routes/team.routes");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -21,9 +21,11 @@ app.use(
 );
 
 // Routes
+app.use("/api/users", require("./routes/user.routes"));
 app.use("/api/admin", adminRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/tournaments", tournamentRoutes);
+app.use("/api/teams", teamRoutes);
 
 // Database sync
 sequelize.sync({ force: false, alter: false }).then(() => {

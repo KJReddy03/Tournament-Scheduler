@@ -108,6 +108,21 @@ const updateParticipantResults = async (req, res) => {
   }
 };
 
+const getTournamentTeams = async (req, res) => {
+  try {
+    const participants = await Participant.findAll({
+      where: {
+        tournamentId: req.params.id,
+        teamId: { [Sequelize.Op.not]: null },
+      },
+      include: [Team],
+    });
+    res.json(participants);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   getAllTournaments,
   getTournamentById,
@@ -115,4 +130,5 @@ module.exports = {
   createTournament,
   joinTournament,
   updateParticipantResults,
+  getTournamentTeams,
 };

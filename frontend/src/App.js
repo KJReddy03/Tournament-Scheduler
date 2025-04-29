@@ -16,6 +16,11 @@ import AdminDashboard from "./components/admin/AdminDashboard";
 import Welcome from "./pages/Welcome";
 import AdminUpdateResults from "./components/admin/AdminUpdateResults";
 import PrivateRoute from "./components/PrivateRoute";
+import CreateTeam from "./components/team/CreateTeam";
+import TeamDetails from "./components/team/TeamDetails";
+import EditTeam from "./components/team/EditTeam";
+import AddMembers from "./components/team/AddMembers";
+import TeamList from "./components/team/TeamList";
 
 function App() {
   const dispatch = useDispatch();
@@ -85,6 +90,46 @@ function App() {
             element={
               <PrivateRoute>
                 <AdminUpdateResults />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/teams/create"
+            element={
+              <PrivateRoute>
+                <CreateTeam />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/teams/:id"
+            element={
+              <PrivateRoute>
+                <TeamDetails />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/teams"
+            element={
+              <PrivateRoute>
+                <TeamList />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/teams/:id/edit"
+            element={
+              <PrivateRoute>
+                <EditTeam />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/teams/:id/add-members"
+            element={
+              <PrivateRoute>
+                <AddMembers />
               </PrivateRoute>
             }
           />

@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchTournamentDetails,
   joinTournament,
 } from "../../redux/actions/tournamentActions";
+import { joinTournamentAsTeam } from "../../redux/actions/teamActions";
+import { fetchUserTeams } from "../../redux/actions/teamActions";
 import "./TournamentDetails.css";
 
 const TournamentDetails = () => {
@@ -15,10 +17,19 @@ const TournamentDetails = () => {
     (state) => state.tournaments
   );
   const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const { userTeams, loading: teamsLoading } = useSelector(
+    (state) => state.teams
+  );
+
+  const [joinAsTeam, setJoinAsTeam] = useState(false);
+  const [selectedTeam, setSelectedTeam] = useState(null);
 
   useEffect(() => {
     dispatch(fetchTournamentDetails(id));
-  }, [dispatch, id]);
+    if (isAuthenticated) {
+      dispatch(fetchUserTeams());
+    }
+  }, [dispatch, id, isAuthenticated]);
 
   const handleJoin = async () => {
     if (!isAuthenticated) {
@@ -27,14 +38,24 @@ const TournamentDetails = () => {
     }
     try {
       await dispatch(joinTournament(id));
-      console.log("attempt failed");
     } catch (error) {
       console.error("Join failed:", error);
     }
   };
 
+  const handleTeamJoin = async () => {
+    if (!selectedTeam) return;
+    try {
+      await dispatch(joinTournamentAsTeam(selectedTeam, id));
+    } catch (error) {
+      console.error("Team join failed:", error);
+    }
+  };
+
   const isParticipant = currentTournament?.Participants?.some(
-    (p) => p.userId === user?.id
+    (p) =>
+      p.userId === user?.id ||
+      (p.teamId && userTeams.some((t) => t.id === p.teamId))
   );
 
   return (
@@ -87,13 +108,76 @@ const TournamentDetails = () => {
                   </div>
                   <div className="col-md-8 join">
                     {isAuthenticated && !isParticipant && (
-                      <button
-                        onClick={handleJoin}
-                        className="btn btn-primary"
-                        disabled={loading}
-                      >
-                        Join Tournament
-                      </button>
+                      <div className="join-options">
+                        <div className="form-check mb-3">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            checked={joinAsTeam}
+                            onChange={() => setJoinAsTeam(!joinAsTeam)}
+                            id="joinAsTeam"
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor="joinAsTeam"
+                          >
+                            Join as a team
+                          </label>
+                        </div>
+
+                        {joinAsTeam ? (
+                          <div className="team-join">
+                            {teamsLoading ? (
+                              <p>Loading your teams...</p>
+                            ) : userTeams?.length > 0 ? (
+                              <>
+                                <select
+                                  className="form-select mb-3"
+                                  value={selectedTeam || ""}
+                                  onChange={(e) =>
+                                    setSelectedTeam(e.target.value)
+                                  }
+                                >
+                                  <option value="">Select a team</option>
+                                  {userTeams.map((team) => (
+                                    <option key={team.id} value={team.id}>
+                                      {team.name} (Captain:{" "}
+                                      {team.captain?.username || "You"})
+                                    </option>
+                                  ))}
+                                </select>
+                                <button
+                                  onClick={handleTeamJoin}
+                                  className="btn btn-primary"
+                                  disabled={!selectedTeam || loading}
+                                >
+                                  {loading ? "Joining..." : "Join as Team"}
+                                </button>
+                              </>
+                            ) : (
+                              <div className="alert alert-info">
+                                You don't have any teams.{" "}
+                                <Link to="/teams/create">Create one</Link>{" "}
+                                first.
+                              </div>
+                            )}
+                            <Link
+                              to="/teams/create"
+                              className="btn btn-outline-secondary ms-2"
+                            >
+                              Create New Team
+                            </Link>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={handleJoin}
+                            className="btn btn-primary"
+                            disabled={loading}
+                          >
+                            {loading ? "Joining..." : "Join Tournament"}
+                          </button>
+                        )}
+                      </div>
                     )}
                     {isParticipant && (
                       <div className="alert alert-info">
@@ -105,14 +189,29 @@ const TournamentDetails = () => {
 
                 <h3 className="part">Participants</h3>
                 <ul className="list-group">
-                  {currentTournament.Participants?.map((participant) => (
-                    <li key={participant.id} className="list-group-item ">
-                      <span>User ID: {participant.userId} </span>
-                      <span>UserName: {participant.User?.username} </span>
-                      <span>Status: {participant.status} </span>
-                      <span>Score: {participant.score}</span>
-                    </li>
-                  ))}
+                  {currentTournament.Participants?.length > 0 ? (
+                    currentTournament.Participants.map((participant) => (
+                      <li key={participant.id} className="list-group-item">
+                        {participant.teamId ? (
+                          <>
+                            <span>Team: {participant.Team?.name} </span>
+                            <span>
+                              (Captain: {participant.Team?.captain?.username}){" "}
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <span>User: {participant.User?.username} </span>
+                            <span>({participant.User?.email}) </span>
+                          </>
+                        )}
+                        <span>Status: {participant.status} </span>
+                        <span>Score: {participant.score}</span>
+                      </li>
+                    ))
+                  ) : (
+                    <li className="list-group-item">No participants yet</li>
+                  )}
                 </ul>
               </div>
             </div>

@@ -1,0 +1,53 @@
+.add-members-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.add-members-container .card {
+  background: rgba(45, 52, 54, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  border: 1px solid rgba(108, 92, 231, 0.3);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.add-members-container .card-header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 20px;
+  border-radius: 20px 20px 0 0 !important;
+}
+
+.add-members-container .card-header h2 {
+  margin: 0;
+}
+
+.add-members-container .card-body {
+  padding: 30px;
+}
+
+.add-members-container .user-list {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 15px;
+  background: rgba(45, 52, 54, 0.5);
+  border-radius: 10px;
+  border: 1px solid rgba(108, 92, 231, 0.2);
+}
+
+.add-members-container .form-check {
+  padding: 10px;
+  margin-bottom: 8px;
+  background: rgba(108, 92, 231, 0.1);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.add-members-container .form-check:hover {
+  background: rgba(108, 92, 231, 0.2);
+}
+
+.add-members-container .form-check-label {
+  margin-left: 10px;
+  cursor: pointer;
+}

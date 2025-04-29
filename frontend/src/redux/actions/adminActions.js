@@ -15,7 +15,7 @@ export const fetchUsers = () => async (dispatch, getState) => {
   try {
     const { token } = getState().auth;
     dispatch(fetchUsersStart());
-    const response = await axios.get(`${API_URL}/admin/users`, {
+    const response = await axios.get(`${API_URL}/users`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     dispatch(fetchUsersSuccess(response.data));
