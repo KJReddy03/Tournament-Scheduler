@@ -8,17 +8,19 @@ const {
   Participant,
   Tournament,
 } = require("../config/db.config");
-const { Op } = require("sequelize");
 const {
   createTeam,
   getTeam,
   joinTournamentAsTeam,
 } = require("../controllers/team.controller");
+const { Op } = require("sequelize");
 
 router.use(auth);
 
-// Create a new team
-router.post("/", async (req, res) => {
+router.post("/", createTeam);
+router.post("/:teamId/join-tournament/:tournamentId", joinTournamentAsTeam);
+
+router.post("/", auth, async (req, res) => {
   try {
     const { name, userIds = [] } = req.body;
     const captainId = req.user.id;
@@ -56,8 +58,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Get user's teams
-router.get("/user", async (req, res) => {
+router.get("/user", auth, async (req, res) => {
   try {
     const teams = await Team.findAll({
       where: { captainId: req.user.id },
@@ -80,9 +81,9 @@ router.get("/user", async (req, res) => {
   }
 });
 
-// Get user's teams (including teams where user is member)
-router.get("/user/my-teams", async (req, res) => {
+router.get("/user/my-teams", auth, async (req, res) => {
   try {
+    // Find teams where user is either captain or member
     const teams = await Team.findAll({
       include: [
         {
@@ -111,8 +112,7 @@ router.get("/user/my-teams", async (req, res) => {
   }
 });
 
-// Get team details
-router.get("/:id", async (req, res) => {
+router.get("/:id", auth, async (req, res) => {
   try {
     const team = await Team.findByPk(req.params.id, {
       include: [
@@ -155,13 +155,12 @@ router.get("/:id", async (req, res) => {
       updatedAt: team.updatedAt,
       captain: team.captain,
       members: team.members,
-      participants:
-        team.Participants?.map((p) => ({
-          id: p.id,
-          status: p.status,
-          score: p.score,
-          tournament: p.Tournament,
-        })) || [],
+      participants: team.Participants.map((p) => ({
+        id: p.id,
+        status: p.status,
+        score: p.score,
+        tournament: p.Tournament,
+      })),
     };
 
     res.json({
@@ -178,8 +177,8 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Update team
-router.put("/:id", async (req, res) => {
+router.get("/:id", getTeam);
+router.put("/:id", auth, async (req, res) => {
   try {
     const team = await Team.findByPk(req.params.id);
     if (!team) return res.status(404).json({ message: "Team not found" });
@@ -197,7 +196,6 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// Add members to team
 router.post("/:id/members", async (req, res) => {
   try {
     const team = await Team.findByPk(req.params.id);
@@ -249,8 +247,7 @@ router.post("/:id/members", async (req, res) => {
   }
 });
 
-// Delete team
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   try {
     const team = await Team.findByPk(req.params.id);
     if (!team) return res.status(404).json({ message: "Team not found" });
@@ -268,8 +265,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-// Remove member from team
-router.delete("/:teamId/members/:userId", async (req, res) => {
+router.delete("/:teamId/members/:userId", auth, async (req, res) => {
   try {
     const { teamId, userId } = req.params;
 
@@ -304,8 +300,5 @@ router.delete("/:teamId/members/:userId", async (req, res) => {
     res.status(500).json({ message: "Failed to remove team member" });
   }
 });
-
-// Join tournament as team
-router.post("/:teamId/join-tournament/:tournamentId", joinTournamentAsTeam);
 
 module.exports = router;
