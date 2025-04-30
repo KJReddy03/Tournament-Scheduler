@@ -52,8 +52,8 @@ const UpdateResults = () => {
   return (
     <div className="page-container">
       <div className="container mt-5">
-        <h2>Update Tournament Results</h2>
-        <Link to={`/tournaments/${id}`} className="btn btn-secondary mb-3">
+        <h2 className="result">Update Tournament Results</h2>
+        <Link to={`/tournaments/${id}`} className="btn btn-primary">
           Back to Tournament
         </Link>
 

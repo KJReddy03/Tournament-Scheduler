@@ -1,6 +1,9 @@
 .admin-container {
-  padding: 2rem;
+  padding: 1.3rem;
   font-family: Arial, sans-serif;
+  background-color: var(--light);
+  border-radius: 5px;
+  box-shadow: 5px 5px 20px rgb(57, 54, 54);
 }
 
 .dashboard-title {
@@ -26,11 +29,20 @@
   background-color: #3f51b5;
   color: white;
 }
+.tab-button:hover {
+  box-shadow: 5px 5px 20px rgba(86, 79, 149, 0.704);
+  transition: all 0.3s ease;
+  transform: translateY(2px);
+}
+.delete-btn:hover {
+  transition: all 0.3s ease;
+  transform: translateY(2px);
+}
 
 .custom-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 }
 
 .custom-table th,

@@ -116,3 +116,12 @@
   max-height: 300px;
   width: 100%;
 }
+.form-select {
+  background-color: var(--light-gray);
+  border: 1px solid var(--medium-gray);
+  color: var(--dark);
+  border-radius: 15px;
+  padding: 12px 15px;
+  transition: all 0.3s ease;
+  width: 200px;
+}
