@@ -49,7 +49,7 @@ const EditTeam = () => {
       <div className="container mt-5">
         <div className="card">
           <div className="card-header">
-            <h2>Edit Team</h2>
+            <h2 className="h2">Edit Team</h2>
           </div>
           <div className="card-body">
             <form onSubmit={handleSubmit}>
@@ -68,14 +68,14 @@ const EditTeam = () => {
               </div>
               <button
                 type="submit"
-                className="btn btn-primary"
+                className="add btn btn-primary"
                 disabled={loading}
               >
                 {loading ? "Updating..." : "Update Team"}
               </button>
               <button
                 type="button"
-                className="btn btn-secondary ms-2"
+                className="add btn btn-primary ms-2"
                 onClick={() => navigate(`/teams/${id}`)}
               >
                 Cancel

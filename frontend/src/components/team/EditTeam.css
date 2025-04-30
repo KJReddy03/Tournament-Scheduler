@@ -40,3 +40,6 @@
   box-shadow: 0 0 0 0.25rem rgba(108, 92, 231, 0.25);
   color: white;
 }
+.card-header .h2 {
+  color: var(--secondary);
+}

@@ -50,4 +50,27 @@
 .add-members-container .form-check-label {
   margin-left: 10px;
   cursor: pointer;
+  color: rgba(255, 255, 255, 0.722);
+}
+.user-list {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #dee2e6;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.form-check {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.form-check:last-child {
+  border-bottom: none;
+}
+.add {
+  margin-right: 10px;
+}
+.form-che-label {
+  color: rgba(255, 255, 255, 0.722);
 }

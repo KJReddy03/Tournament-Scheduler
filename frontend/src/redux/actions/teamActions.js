@@ -26,7 +26,7 @@ import {
   // removeTeamMemberFailure,
 } from "../reducers/teamReducer";
 
-const API_URL = process.env.REACT_APP_API_URL + "/teams";
+const API_URL = process.env.REACT_APP_API_URL;
 
 export const createTeam = (teamData) => async (dispatch, getState) => {
   try {
@@ -90,7 +90,7 @@ export const joinTournamentAsTeam =
       const { token } = getState().auth;
       dispatch(joinTournamentStart());
       const response = await axios.post(
-        `${API_URL}/${teamId}/join-tournament/${tournamentId}`,
+        `${API_URL}/teams/${teamId}/join-tournament/${tournamentId}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -153,19 +153,30 @@ export const addTeamMembers =
     try {
       const { token } = getState().auth;
       dispatch(addTeamMembersStart());
+
       const response = await axios.post(
         `${API_URL}/teams/${teamId}/members`,
-        { userIds },
+        { userIds }, // Make sure this matches backend expectation
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         }
       );
+
+      // Dispatch success with the updated team data
       dispatch(addTeamMembersSuccess(response.data));
+
+      // Return the complete response for component to handle
       return response.data;
     } catch (error) {
-      dispatch(
-        addTeamMembersFailure(error.response?.data?.message || error.message)
-      );
+      // More detailed error handling
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Failed to add members";
+      dispatch(addTeamMembersFailure(errorMessage));
       throw error;
     }
   };

@@ -97,12 +97,20 @@ const Navbar = () => {
                           </Link>
                         </li>
                         <li>
-                          <Link className="dropdown-link" to="/teams">
+                          <Link
+                            className="dropdown-link"
+                            to="/teams"
+                            onClick={() => setOpen(false)}
+                          >
                             My Teams
                           </Link>
                         </li>
                         <li>
-                          <Link className="dropdown-link" to="/teams/create">
+                          <Link
+                            className="dropdown-link"
+                            to="/teams/create"
+                            onClick={() => setOpen(false)}
+                          >
                             Create Team
                           </Link>
                         </li>

@@ -138,6 +138,7 @@
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
+  margin: 5px;
 }
 
 .tournament-list {
@@ -230,28 +231,24 @@
   }
 }
 
-/*new*/
-.team-member-item {
+.btn-outline-danger {
   transition: all 0.2s ease;
 }
 
-.team-member-item:hover {
-  background-color: #f8f9fa;
+.btn-outline-danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
-
-.tournament-badge {
-  font-size: 0.9rem;
+.remove {
+  background: var(--secondary);
+  color: rgb(0, 0, 0);
+  font-size: 0.75rem;
+  border-radius: 50px;
+  padding: 5px 15px;
+  display: inline-block;
+  margin-left: 15px;
 }
-
-.management-actions {
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #eee;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .card-body .row > div {
-    margin-bottom: 1.5rem;
-  }
+.remove:hover {
+  box-shadow: 3px 4px 8px rgba(211, 211, 211, 0.315);
+  transition: all 0.3s ease;
 }

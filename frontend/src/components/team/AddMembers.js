@@ -32,10 +32,17 @@ const AddMembers = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await dispatch(addTeamMembers(id, { userIds: selectedUsers }));
-      navigate(`/teams/${id}`);
+      const result = await dispatch(
+        addTeamMembers(id, { userIds: selectedUsers })
+      );
+
+      // If successful, navigate to team details
+      if (result) {
+        navigate(`/teams/${id}`);
+      }
     } catch (error) {
-      console.error("Failed to add members:", error);
+      console.error("Add members error:", error);
+      // Optionally show a user-friendly error message
     }
   };
 
@@ -50,19 +57,22 @@ const AddMembers = () => {
     );
   }
 
-  // Filter out users who are already team members
-  const availableUsers = users.filter(
-    (user) =>
-      !currentTeam.Users.some((member) => member.id === user.id) &&
-      user.id !== currentTeam.captainId
-  );
+  // Safely filter out users who are already team members
+  const availableUsers =
+    users?.filter((userItem) => {
+      // Check if user is not the captain and not already a member
+      return (
+        userItem.id !== currentTeam.captainId &&
+        !(currentTeam.members || []).some((member) => member.id === userItem.id)
+      );
+    }) || [];
 
   return (
     <div className="add-members-container">
       <div className="container mt-5">
         <div className="card">
           <div className="card-header">
-            <h2>Add Members to {currentTeam.name}</h2>
+            <h2 className="h2">Add Members to {currentTeam.name}</h2>
           </div>
           <div className="card-body">
             <form onSubmit={handleSubmit}>
@@ -70,38 +80,38 @@ const AddMembers = () => {
                 <label className="form-label">Select Members</label>
                 {availableUsers.length > 0 ? (
                   <div className="user-list">
-                    {availableUsers.map((user) => (
-                      <div key={user.id} className="form-check">
+                    {availableUsers.map((userItem) => (
+                      <div key={userItem.id} className="form-check">
                         <input
                           className="form-check-input"
                           type="checkbox"
-                          checked={selectedUsers.includes(user.id)}
-                          onChange={() => handleUserToggle(user.id)}
-                          id={`user-${user.id}`}
+                          checked={selectedUsers.includes(userItem.id)}
+                          onChange={() => handleUserToggle(userItem.id)}
+                          id={`user-${userItem.id}`}
                         />
                         <label
                           className="form-check-label"
-                          htmlFor={`user-${user.id}`}
+                          htmlFor={`user-${userItem.id}`}
                         >
-                          {user.username} ({user.email})
+                          {userItem.username} ({userItem.email})
                         </label>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <p>No available users to add</p>
+                  <p className="form-che-label">No available users to add</p>
                 )}
               </div>
               <button
                 type="submit"
-                className="btn btn-primary"
+                className="add btn btn-primary"
                 disabled={selectedUsers.length === 0 || teamLoading}
               >
                 {teamLoading ? "Adding..." : "Add Members"}
               </button>
               <button
                 type="button"
-                className="btn btn-secondary ms-2"
+                className="add btn btn-primary ms-2"
                 onClick={() => navigate(`/teams/${id}`)}
               >
                 Cancel

@@ -15,8 +15,8 @@ const TeamList = () => {
   return (
     <div className="container mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2>My Teams</h2>
-        <Link to="/teams/create" className="btn btn-primary">
+        <h2 className="my-teams">My Teams</h2>
+        <Link to="/teams/create" className="create btn btn-primary">
           Create New Team
         </Link>
       </div>
