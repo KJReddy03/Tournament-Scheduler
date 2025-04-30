@@ -252,3 +252,9 @@
   box-shadow: 3px 4px 8px rgba(211, 211, 211, 0.315);
   transition: all 0.3s ease;
 }
+.tourny-name {
+  color: var(--primary-light);
+}
+.tourny-details {
+  color: rgba(225, 223, 223, 0.89);
+}

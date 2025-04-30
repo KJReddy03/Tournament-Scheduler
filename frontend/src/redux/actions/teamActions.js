@@ -26,7 +26,7 @@ import {
   // removeTeamMemberFailure,
 } from "../reducers/teamReducer";
 
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API_URL + "/teams";
 
 export const createTeam = (teamData) => async (dispatch, getState) => {
   try {
@@ -90,16 +90,18 @@ export const joinTournamentAsTeam =
       const { token } = getState().auth;
       dispatch(joinTournamentStart());
       const response = await axios.post(
-        `${API_URL}/teams/${teamId}/join-tournament/${tournamentId}`,
+        `${API_URL}/${teamId}/tournaments/${tournamentId}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
       dispatch(joinTournamentSuccess(response.data));
       return response.data;
     } catch (error) {
-      dispatch(
-        joinTournamentFailure(error.response?.data?.message || error.message)
-      );
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Failed to join tournament";
+      dispatch(joinTournamentFailure(errorMessage));
       throw error;
     }
   };
@@ -136,7 +138,7 @@ export const updateTeam = (teamId, teamData) => async (dispatch, getState) => {
   try {
     const { token } = getState().auth;
     dispatch(updateTeamStart());
-    const response = await axios.put(`${API_URL}/teams/${teamId}`, teamData, {
+    const response = await axios.put(`${API_URL}/${teamId}`, teamData, {
       headers: { Authorization: `Bearer ${token}` },
     });
     dispatch(updateTeamSuccess(response.data));
@@ -155,7 +157,7 @@ export const addTeamMembers =
       dispatch(addTeamMembersStart());
 
       const response = await axios.post(
-        `${API_URL}/teams/${teamId}/members`,
+        `${API_URL}/${teamId}/members`,
         { userIds }, // Make sure this matches backend expectation
         {
           headers: {

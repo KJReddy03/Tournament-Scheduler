@@ -18,7 +18,7 @@ const { Op } = require("sequelize");
 router.use(auth);
 
 router.post("/", createTeam);
-router.post("/:teamId/join-tournament/:tournamentId", joinTournamentAsTeam);
+router.post("/:teamId/tournaments/:tournamentId", joinTournamentAsTeam);
 
 router.post("/", auth, async (req, res) => {
   try {

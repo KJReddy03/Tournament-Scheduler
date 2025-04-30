@@ -44,11 +44,35 @@ const TournamentDetails = () => {
   };
 
   const handleTeamJoin = async () => {
-    if (!selectedTeam) return;
+    if (!selectedTeam) {
+      alert("Please select a team first");
+      return;
+    }
+
     try {
-      await dispatch(joinTournamentAsTeam(selectedTeam, id));
+      const result = await dispatch(joinTournamentAsTeam(selectedTeam, id));
+
+      if (result.error) {
+        alert(result.error.message || "Failed to join tournament");
+        return;
+      }
+
+      alert("Successfully joined tournament as team!");
+      // Refresh tournament data
+      dispatch(fetchTournamentDetails(id));
     } catch (error) {
       console.error("Team join failed:", error);
+
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Failed to join tournament. Please try again.";
+
+      alert(errorMessage);
+
+      if (error.response?.data?.error) {
+        console.error("Server error details:", error.response.data.error);
+      }
     }
   };
 

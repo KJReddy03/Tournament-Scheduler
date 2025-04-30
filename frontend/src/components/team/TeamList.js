@@ -27,7 +27,7 @@ const TeamList = () => {
       {userTeams.length > 0 ? (
         <div className="row">
           {userTeams.map((team) => (
-            <div key={team.id} className="col-md-4 mb-4">
+            <div key={team.id} className="card-div">
               <div className="card h-100">
                 <div className="card-body">
                   <h5 className="card-title">{team.name}</h5>

@@ -5,6 +5,7 @@ module.exports = (sequelize) => {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     userId: { type: DataTypes.INTEGER, allowNull: false },
     tournamentId: { type: DataTypes.INTEGER, allowNull: false },
+    teamId: { type: DataTypes.INTEGER, allowNull: true },
     status: {
       type: DataTypes.ENUM("registered", "active", "eliminated", "winner"),
       defaultValue: "registered",

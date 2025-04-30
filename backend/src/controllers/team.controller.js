@@ -1,4 +1,11 @@
-const { User, Team, TeamUser } = require("../config/db.config");
+const {
+  User,
+  Team,
+  TeamUser,
+  Participant,
+  Tournament,
+} = require("../config/db.config");
+const { Op } = require("sequelize");
 
 // Create a new team
 const createTeam = async (req, res) => {
@@ -94,40 +101,76 @@ const getTeam = async (req, res) => {
 
 // Join tournament as a team
 const joinTournamentAsTeam = async (req, res) => {
+  console.log("Starting team tournament join process");
   try {
     const { teamId, tournamentId } = req.params;
+    const userId = req.user.id;
 
-    // Verify team exists and user is captain
-    const team = await Team.findByPk(teamId);
+    // 1. Verify team exists
+    const team = await Team.findByPk(teamId, {
+      include: [{ model: User, as: "captain" }],
+    });
     if (!team) {
       return res.status(404).json({ message: "Team not found" });
     }
 
-    if (team.captainId !== req.user.id) {
+    // 2. Verify user is captain
+
+    if (team.captain.id !== userId) {
       return res
         .status(403)
         .json({ message: "Only team captain can register team" });
     }
 
-    // Check if team is already registered
-    const existing = await Participant.findOne({
-      where: { teamId, tournamentId },
-    });
+    // 3. Verify tournament exists
+    const tournament = await Tournament.findByPk(tournamentId);
 
-    if (existing) {
-      return res.status(400).json({ message: "Team already registered" });
+    if (!tournament) {
+      return res.status(404).json({ message: "Tournament not found" });
     }
 
-    // Create participant record for the team
+    // 4. Check tournament capacity
+    const participantCount = await Participant.count({
+      where: { tournamentId },
+    });
+
+    if (participantCount >= tournament.maxParticipants) {
+      return res.status(400).json({ message: "Tournament is full" });
+    }
+
+    // 5. Check for existing participation
+    const existing = await Participant.findOne({
+      where: {
+        [Op.or]: [
+          { teamId, tournamentId },
+          { userId: team.captain.id, tournamentId },
+        ],
+      },
+    });
+    console.log("Existing participation check:", existing);
+    if (existing) {
+      return res
+        .status(400)
+        .json({ message: "Team or captain already registered" });
+    }
+
+    // 6. Create participant record
+
     const participant = await Participant.create({
       tournamentId,
       teamId,
+      userId: team.captain.id,
       status: "registered",
+      score: 0,
     });
 
     res.status(201).json(participant);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      message: "Failed to join tournament",
+      error: error.message,
+      stack: process.env.NODE_ENV === "development" ? error.stack : undefined,
+    });
   }
 };
 

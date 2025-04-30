@@ -150,47 +150,51 @@ const TeamDetails = () => {
           )}
 
           {/*Tournaments this team has joined */}
-          <div className="tournament-list">
-            <h4>Tournaments</h4>
-            {currentTeam.participants?.length > 0 ? (
-              <div className="tournament-item">
-                {currentTeam.participants.map((participant) => (
-                  <Link
-                    key={participant.id}
-                    to={`/tournaments/${participant.tournament.id}`}
-                    className=""
-                  >
-                    <div className="tournament-item">
+          <div className="team-section">
+            <div className="tournament-list">
+              <h4>Tournaments</h4>
+              {currentTeam.participants?.length > 0 ? (
+                <div className="tournament-item">
+                  {currentTeam.participants.map((participant) => (
+                    <Link
+                      key={participant.id}
+                      to={`/tournaments/${participant.tournament.id}`}
+                      className=""
+                    >
                       <div>
-                        <strong>{participant.tournament.name}</strong>
-                        <br />
-                        <small className="tournament-item">
-                          {participant.tournament.game} |{" "}
-                          {new Date(
-                            participant.tournament.startDate
-                          ).toLocaleDateString()}
-                        </small>
+                        <div>
+                          <strong className="tourny-name">
+                            {participant.tournament.name}
+                          </strong>
+                          <br />
+                          <small className="tourny-details">
+                            {participant.tournament.game} |{" "}
+                            {new Date(
+                              participant.tournament.startDate
+                            ).toLocaleDateString()}
+                          </small>
+                        </div>
+                        <span
+                          className={`badge ${
+                            participant.status === "winner"
+                              ? "status-winner"
+                              : participant.status === "eliminated"
+                              ? "status-eliminated"
+                              : "status-active"
+                          }`}
+                        >
+                          {participant.status}
+                        </span>
                       </div>
-                      <span
-                        className={`badge ${
-                          participant.status === "winner"
-                            ? "status-winner"
-                            : participant.status === "eliminated"
-                            ? "status-eliminated"
-                            : "status-active"
-                        }`}
-                      >
-                        {participant.status}
-                      </span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <p className="tournament-item">
-                This team hasn't joined any tournaments yet.
-              </p>
-            )}
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <p className="tournament-item">
+                  This team hasn't joined any tournaments yet.
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </div>
