@@ -21,7 +21,7 @@ export const login = async (req, res) => {
       { id: user.id, role: user.role }, // Include role in token
       process.env.JWT_SECRET || "default_secret",
       {
-        expiresIn: "1h",
+        expiresIn: "1d",
       }
     );
 
