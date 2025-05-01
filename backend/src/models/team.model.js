@@ -13,7 +13,7 @@ module.exports = (sequelize) => {
       foreignKey: "captainId",
     });
     Team.belongsToMany(models.User, {
-      through: "TeamUser",
+      through: "TeamUsers",
       as: "members",
       foreignKey: "teamId",
     });

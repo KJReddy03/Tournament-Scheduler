@@ -115,7 +115,24 @@ const getTournamentTeams = async (req, res) => {
         tournamentId: req.params.id,
         teamId: { [Sequelize.Op.not]: null },
       },
-      include: [Team],
+      include: [
+        {
+          model: Team,
+          include: [
+            {
+              model: User,
+              as: "members",
+              attributes: ["id", "username", "email"],
+              through: { attributes: [] },
+            },
+            {
+              model: User,
+              as: "captain",
+              attributes: ["id", "username", "email"],
+            },
+          ],
+        },
+      ],
     });
     res.json(participants);
   } catch (error) {

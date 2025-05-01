@@ -1,4 +1,4 @@
-const { Tournament, Participant } = require("../config/db.config");
+const { Tournament, Participant, Team, User } = require("../config/db.config");
 
 class TournamentRepository {
   async findAll() {
@@ -7,7 +7,29 @@ class TournamentRepository {
 
   async findById(id) {
     return await Tournament.findByPk(id, {
-      include: [Participant],
+      include: [
+        {
+          model: Participant,
+          include: [
+            {
+              model: Team,
+              as: "Team",
+              include: [
+                {
+                  model: User,
+                  as: "captain",
+                  attributes: ["id", "username", "email"],
+                },
+              ],
+            },
+            {
+              model: User,
+              as: "User",
+              attributes: ["id", "username", "email"],
+            },
+          ],
+        },
+      ],
     });
   }
 

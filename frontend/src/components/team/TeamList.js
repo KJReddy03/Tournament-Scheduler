@@ -7,6 +7,7 @@ import "./TeamList.css";
 const TeamList = () => {
   const dispatch = useDispatch();
   const { userTeams, loading, error } = useSelector((state) => state.teams);
+  console.log("User Teams:", userTeams);
 
   useEffect(() => {
     dispatch(fetchUserTeams());

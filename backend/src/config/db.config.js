@@ -31,11 +31,17 @@ User.hasMany(Participant, { foreignKey: "userId" });
 
 User.hasMany(Team, { foreignKey: "captainId" });
 
-const TeamUser = sequelize.define("TeamUser", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  teamId: { type: DataTypes.INTEGER, allowNull: false },
-  userId: { type: DataTypes.INTEGER, allowNull: false },
-});
+const TeamUser = sequelize.define(
+  "TeamUser",
+  {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    teamId: { type: DataTypes.INTEGER, allowNull: false },
+    userId: { type: DataTypes.INTEGER, allowNull: false },
+  },
+  {
+    tableName: "teamusers",
+  }
+);
 
 // Team belongs to User as captain
 Team.belongsTo(User, {
@@ -45,7 +51,7 @@ Team.belongsTo(User, {
 });
 
 Team.belongsToMany(User, {
-  through: "TeamUser",
+  through: "TeamUsers",
   as: "members",
   foreignKey: "teamId",
   otherKey: "userId",

@@ -44,7 +44,6 @@ const getMyTeams = async (req, res) => {
           as: "members",
           attributes: ["id", "username", "email"],
           through: { attributes: [] },
-          where: { id: req.user.id },
         },
       ],
       where: {
@@ -174,9 +173,42 @@ const joinTournamentAsTeam = async (req, res) => {
   }
 };
 
+const addTeamMembers = async (req, res) => {
+  try {
+    const { userIds } = req.body;
+    const { id: teamId } = req.params;
+
+    // Add each userId to the TeamUser table
+    await Promise.all(
+      userIds.map((userId) =>
+        TeamUser.findOrCreate({ where: { teamId, userId } })
+      )
+    );
+
+    // Fetch updated team with members
+    const updatedTeam = await Team.findByPk(teamId, {
+      include: [
+        {
+          model: User,
+          as: "members",
+          attributes: ["id", "username", "email"],
+          through: { attributes: [] },
+        },
+        { model: User, as: "captain", attributes: ["id", "username", "email"] },
+      ],
+    });
+
+    res.json(updatedTeam);
+  } catch (error) {
+    console.error("Failed to add members:", error);
+    res.status(500).json({ message: "Failed to add members" });
+  }
+};
+
 module.exports = {
   createTeam,
   getTeam,
   joinTournamentAsTeam,
   getMyTeams,
+  addTeamMembers,
 };

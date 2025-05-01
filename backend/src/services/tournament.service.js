@@ -1,6 +1,6 @@
 const tournamentRepo = require("../repositories/tournament.repository");
 const participantRepo = require("../repositories/participant.repository");
-const { Tournament, Participant, User } = require("../config/db.config");
+const { Tournament, Participant, Team, User } = require("../config/db.config");
 
 class TournamentService {
   async getAllTournaments() {
@@ -30,7 +30,19 @@ class TournamentService {
           include: [
             {
               model: User,
-              attributes: ["id", "username"],
+              as: "User",
+              attributes: ["id", "username", "email"],
+            },
+            {
+              model: Team,
+              as: "Team",
+              include: [
+                {
+                  model: User,
+                  as: "captain",
+                  attributes: ["id", "username", "email"],
+                },
+              ],
             },
           ],
         },
