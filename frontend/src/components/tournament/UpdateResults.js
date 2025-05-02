@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,6 +11,7 @@ const UpdateResults = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const formRef = useRef(null);
   const { currentTournament, loading, error } = useSelector(
     (state) => state.tournaments
   );
@@ -20,6 +21,23 @@ const UpdateResults = () => {
     status: "registered",
     score: 0,
   });
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        formRef.current &&
+        !formRef.current.contains(event.target) &&
+        selectedParticipant
+      ) {
+        setSelectedParticipant(null); // close the form
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [selectedParticipant]);
 
   useEffect(() => {
     dispatch(fetchTournamentDetails(id));
@@ -43,7 +61,7 @@ const UpdateResults = () => {
         updateParticipantResults(id, selectedParticipant, updateData)
       );
       alert("Results updated successfully");
-      navigate(`/tournaments/${id}`);
+      setSelectedParticipant(null); // ✅ close the form after submit
     } catch (error) {
       console.error("Update failed:", error);
     }
@@ -91,9 +109,14 @@ const UpdateResults = () => {
               </ul>
             </div>
 
-            <div className="col-md-6">
+            <div className="col-md-6 div-ele">
               {selectedParticipant && (
-                <form onSubmit={handleSubmit}>
+                //from to update results
+                <form
+                  onSubmit={handleSubmit}
+                  className="result-form"
+                  ref={formRef}
+                >
                   <div className="mb-3">
                     <label className="form-label">Status</label>
                     <select
@@ -127,6 +150,7 @@ const UpdateResults = () => {
                     Update Results
                   </button>
                 </form>
+                //ends here
               )}
             </div>
           </div>

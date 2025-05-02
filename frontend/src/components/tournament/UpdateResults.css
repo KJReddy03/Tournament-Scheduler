@@ -84,3 +84,13 @@
 .result {
   margin-bottom: 15px;
 }
+.result-form {
+  padding: 20px;
+  background-color: rgba(200, 161, 229, 0.425);
+  border-radius: 15px;
+}
+.div-ele {
+  position: absolute;
+  left: 35%;
+  top: 35%;
+}

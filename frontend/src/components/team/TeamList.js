@@ -28,7 +28,7 @@ const TeamList = () => {
         <div className="row">
           {userTeams.map((team) => (
             <div key={team.id} className="card-div">
-              <div className="card h-100">
+              <div className="card h-101">
                 <div className="card-body">
                   <h5 className="card-title">{team.name}</h5>
                   <p className="card-text">
@@ -37,7 +37,10 @@ const TeamList = () => {
                   <p className="card-text">
                     Members: {team.members?.length || 1}
                   </p>
-                  <Link to={`/teams/${team.id}`} className="btn btn-primary">
+                  <Link
+                    to={`/teams/${team.id}`}
+                    className="view-team btn btn-primary"
+                  >
                     View Team
                   </Link>
                 </div>

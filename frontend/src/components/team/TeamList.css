@@ -12,3 +12,10 @@
 .card-div {
   margin: 0 5px;
 }
+.h-101 {
+  width: fit-content;
+}
+.btn.btn-primary.view-team {
+  position: relative;
+  top: 10px;
+}
