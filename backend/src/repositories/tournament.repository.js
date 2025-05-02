@@ -1,52 +1,58 @@
-const { Tournament, Participant, Team, User } = require("../config/db.config");
+const Tournament = require("../models/Tournament.model");
+const Participant = require("../models/Participant.model");
 
 class TournamentRepository {
+  // Get all tournaments
   async findAll() {
-    return await Tournament.findAll();
+    return await Tournament.find({});
   }
 
+  // Get tournament by ID with participants, teams, captains, and users
   async findById(id) {
-    return await Tournament.findByPk(id, {
-      include: [
-        {
-          model: Participant,
-          include: [
-            {
-              model: Team,
-              as: "Team",
-              include: [
-                {
-                  model: User,
-                  as: "captain",
-                  attributes: ["id", "username", "email"],
-                },
-              ],
-            },
-            {
-              model: User,
-              as: "User",
-              attributes: ["id", "username", "email"],
-            },
-          ],
+    const tournament = await Tournament.findById(id).lean();
+
+    if (!tournament) return null;
+
+    const participants = await Participant.find({ tournamentId: id })
+      .populate({
+        path: "teamId",
+        populate: {
+          path: "captainId",
+          select: "id username email",
         },
-      ],
+      })
+      .populate({
+        path: "userId",
+        select: "id username email",
+      });
+
+    return {
+      ...tournament,
+      participants,
+    };
+  }
+
+  // Create tournament
+  async create(tournamentData) {
+    const tournament = new Tournament(tournamentData);
+    return await tournament.save();
+  }
+
+  // Update tournament by ID
+  async update(id, tournamentData) {
+    return await Tournament.findByIdAndUpdate(id, tournamentData, {
+      new: true,
     });
   }
 
-  async create(tournamentData) {
-    return await Tournament.create(tournamentData);
-  }
-
-  async update(id, tournamentData) {
-    return await Tournament.update(tournamentData, { where: { id } });
-  }
-
+  // Delete tournament by ID
   async delete(id) {
-    return await Tournament.destroy({ where: { id } });
+    return await Tournament.findByIdAndDelete(id);
   }
 
+  // Find tournaments by creator
   async findByCreator(creatorId) {
-    return await Tournament.findAll({ where: { creatorId } });
+    return await Tournament.find({ creatorId });
   }
 }
 

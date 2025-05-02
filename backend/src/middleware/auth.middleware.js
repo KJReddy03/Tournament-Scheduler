@@ -12,8 +12,10 @@ const auth = (req, res, next) => {
 
     const token = authHeader.split(" ")[1];
 
-    if (!token || token === "undefined") {
-      return res.status(401).json({ message: "Token is undefined or invalid" });
+    if (!token || token === "undefined" || token === "null") {
+      return res
+        .status(401)
+        .json({ message: "Token is undefined or invalid or null" });
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);

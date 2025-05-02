@@ -102,18 +102,18 @@ const TeamDetails = () => {
               {allMembers.length > 0 ? (
                 <ul className="member-list">
                   {allMembers.map((member) => (
-                    <li key={member.id} className="member-item">
+                    <li key={member._id} className="member-item">
                       <span className="member-name">{member.username}</span>
                       <br />
                       <span className="member-email">{member.email}</span>
 
-                      {member.id === currentTeam.captainId ? (
+                      {member._id === currentTeam.captainId ? (
                         <span className="captain-badge">Captain</span>
                       ) : (
                         user?.id === currentTeam.captainId && (
                           <button
                             className="remove action-buttons"
-                            onClick={() => handleRemoveMember(member.id)}
+                            onClick={() => handleRemoveMember(member._id)}
                           >
                             Remove
                           </button>

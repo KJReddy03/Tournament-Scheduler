@@ -7,7 +7,6 @@ import "./TeamList.css";
 const TeamList = () => {
   const dispatch = useDispatch();
   const { userTeams, loading, error } = useSelector((state) => state.teams);
-  console.log("User Teams:", userTeams);
 
   useEffect(() => {
     dispatch(fetchUserTeams());
@@ -33,10 +32,10 @@ const TeamList = () => {
                 <div className="card-body">
                   <h5 className="card-title">{team.name}</h5>
                   <p className="card-text">
-                    Captain: {team.captain?.username || "You"}
+                    Captain: {team.captain?.username || "Unknown"}
                   </p>
                   <p className="card-text">
-                    Members: {team.Users?.length || 1}
+                    Members: {team.members?.length || 1}
                   </p>
                   <Link to={`/teams/${team.id}`} className="btn btn-primary">
                     View Team

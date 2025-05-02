@@ -65,25 +65,29 @@ const UpdateResults = () => {
             <div className="col-md-6">
               <h4>Select Participant</h4>
               <ul className="list-group">
-                {currentTournament.Participants?.map((participant) => (
-                  <li
-                    key={participant.id}
-                    className={`list-group-item ${
-                      selectedParticipant === participant.id ? "active" : ""
-                    }`}
-                    onClick={() => {
-                      setSelectedParticipant(participant.id);
-                      setUpdateData({
-                        status: participant.status,
-                        score: participant.score,
-                      });
-                    }}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {participant.User?.username} - Status: {participant.status}{" "}
-                    - Score: {participant.score}
-                  </li>
-                ))}
+                {currentTournament.participants?.length > 0 ? (
+                  currentTournament.participants?.map((participant) => (
+                    <li
+                      key={participant.id}
+                      className={`list-group-item ${
+                        selectedParticipant === participant.id ? "active" : ""
+                      }`}
+                      onClick={() => {
+                        setSelectedParticipant(participant.id);
+                        setUpdateData({
+                          status: participant.status,
+                          score: participant.score,
+                        });
+                      }}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {participant.userId?.username} - Status:{" "}
+                      {participant.status} - Score: {participant.score}
+                    </li>
+                  ))
+                ) : (
+                  <span>NO Participants Joined</span>
+                )}
               </ul>
             </div>
 

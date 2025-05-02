@@ -1,11 +1,10 @@
-const { User, Tournament, Participant } = require("../config/db.config");
+const User = require("../models/user.model");
+const Tournament = require("../models/Tournament.model");
+const Participant = require("../models/Participant.model");
 
-// Get all users
 const getAllUsers = async (req, res) => {
   try {
-    const users = await User.findAll({
-      attributes: ["id", "username", "email", "role"],
-    });
+    const users = await User.find({}, "id username email role");
     res.json(users);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -14,68 +13,54 @@ const getAllUsers = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    const user = await User.findByPk(req.params.id);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    // Check if user is trying to delete themselves
-    if (user.id === req.user.id) {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+    if (user._id.toString() === req.user.id)
       return res.status(403).json({ message: "Cannot delete yourself" });
-    }
-
-    // Prevent deleting admin users
-    if (user.role === "admin") {
+    if (user.role === "admin")
       return res.status(403).json({ message: "Cannot delete admin users" });
-    }
 
-    await user.destroy();
+    await user.deleteOne();
     res.json({ message: "User deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-//Delete Tournament
 const deleteTournament = async (req, res) => {
   try {
-    const tournament = await Tournament.findByPk(req.params.id);
-    if (!tournament) {
+    const tournament = await Tournament.findById(req.params.id);
+    if (!tournament)
       return res.status(404).json({ message: "Tournament not found" });
-    }
-
-    // Delete associated participants first
-    await Participant.destroy({ where: { tournamentId: tournament.id } });
-
-    await tournament.destroy();
+    await Participant.deleteMany({ tournamentId: tournament._id });
+    await tournament.deleteOne();
     res.json({ message: "Tournament deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// Delete a participant
 const deleteParticipant = async (req, res) => {
   try {
-    const participant = await Participant.findByPk(req.params.id);
-    if (!participant) {
+    const participant = await Participant.findById(req.params.id);
+    if (!participant)
       return res.status(404).json({ message: "Participant not found" });
-    }
-    await participant.destroy();
+    await participant.deleteOne();
     res.json({ message: "Participant deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// Update participant results (admin version)
 const updateParticipant = async (req, res) => {
   try {
-    const participant = await Participant.findByPk(req.params.id);
-    if (!participant) {
+    const participant = await Participant.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    if (!participant)
       return res.status(404).json({ message: "Participant not found" });
-    }
-    await participant.update(req.body);
     res.json(participant);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -86,6 +71,6 @@ module.exports = {
   getAllUsers,
   deleteUser,
   deleteParticipant,
-  updateParticipant: updateParticipant,
+  updateParticipant,
   deleteTournament,
 };

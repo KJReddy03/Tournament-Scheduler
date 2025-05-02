@@ -1,48 +1,54 @@
-const tournamentService = require("../services/tournament.service");
-const { Tournament } = require("../config/db.config");
+const Tournament = require("../models/Tournament.model");
+const Participant = require("../models/Participant.model");
 
-// GET /api/tournaments
-const getAllTournaments = async (req, res) => {
+exports.getAllTournaments = async (req, res) => {
   try {
-    const tournaments = await tournamentService.getAllTournaments();
-    res.json(tournaments);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// GET /api/tournaments/:id
-const getTournamentById = async (req, res) => {
-  try {
-    const tournament = await tournamentService.getTournamentById(req.params.id);
-    if (!tournament) {
-      return res.status(404).json({ message: "Tournament not found" });
-    }
-    res.json(tournament);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// GET /api/tournaments/:id/participants
-const getTournamentParticipants = async (req, res) => {
-  try {
-    const participants = await tournamentService.getTournamentParticipants(
-      req.params.id
+    const tournaments = await Tournament.find();
+    const tournamentsWithCounts = await Promise.all(
+      tournaments.map(async (t) => {
+        const count = await Participant.countDocuments({ tournamentId: t._id });
+        return { ...t.toObject(), id: t._id, participantCount: count };
+      })
     );
+    res.json(tournamentsWithCounts);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.getTournamentById = async (req, res) => {
+  try {
+    const tournament = await Tournament.findById(req.params.id).lean();
+    if (!tournament)
+      return res.status(404).json({ message: "Tournament not found" });
+
+    const participants = await Participant.find({ tournamentId: req.params.id })
+      .populate({
+        path: "teamId",
+        populate: { path: "captainId", select: "id username email" },
+      })
+      .populate({ path: "userId", select: "id username email" });
+
+    res.json({ ...tournament, participants });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.getTournamentParticipants = async (req, res) => {
+  try {
+    const participants = await Participant.find({
+      tournamentId: req.params.id,
+    });
     res.json(participants);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// POST /api/tournaments (Protected)
-const createTournament = async (req, res) => {
+exports.createTournament = async (req, res) => {
   try {
     const { name, game, startDate, endDate, maxParticipants } = req.body;
-
-    console.log("BODY RECEIVED:", req.body);
-
     const gameImageMap = {
       Valorant: "/images/Valorant.jpg",
       CSGO: "/images/CSGO.jpg",
@@ -61,10 +67,9 @@ const createTournament = async (req, res) => {
       Fortnite: "/images/Fortnite.jpg",
       Brawlhalla: "/images/Brawlhalla.jpg",
     };
-
     const imagePath = gameImageMap[game] || "/images/default.jpg";
 
-    const newTournament = await Tournament.create({
+    const newTournament = new Tournament({
       name,
       game,
       startDate,
@@ -73,34 +78,43 @@ const createTournament = async (req, res) => {
       image: imagePath,
       creatorId: req.user?.id || null,
     });
-
+    await newTournament.save();
     res.status(201).json(newTournament);
   } catch (error) {
-    console.error("Create Tournament Error:", error);
     res.status(500).json({ message: "Failed to create tournament" });
   }
 };
 
-// POST /api/tournaments/:id/join (Protected)
-const joinTournament = async (req, res) => {
+exports.joinTournament = async (req, res) => {
   try {
-    const result = await tournamentService.joinTournament(
-      req.user.id,
-      req.params.id
-    );
-    res.status(201).json(result);
+    const userId = req.user.id;
+    const tournamentId = req.params.id;
+    const tournament = await Tournament.findById(tournamentId);
+    if (!tournament)
+      return res.status(404).json({ message: "Tournament not found" });
+
+    const participantCount = await Participant.countDocuments({ tournamentId });
+    if (participantCount >= tournament.maxParticipants)
+      return res.status(400).json({ message: "Tournament is full" });
+
+    const existing = await Participant.findOne({ userId, tournamentId });
+    if (existing)
+      return res.status(400).json({ message: "Already registered" });
+
+    const participant = new Participant({ userId, tournamentId });
+    await participant.save();
+    res.status(201).json(participant);
   } catch (error) {
-    console.error("🔥 Join tournament error:", error.message);
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// PUT /api/tournaments/:id/participants/:participantId (Admin only)
-const updateParticipantResults = async (req, res) => {
+exports.updateParticipantResults = async (req, res) => {
   try {
-    const updated = await tournamentService.updateParticipantResults(
+    const updated = await Participant.findByIdAndUpdate(
       req.params.participantId,
-      req.body
+      req.body,
+      { new: true }
     );
     res.json(updated);
   } catch (error) {
@@ -108,44 +122,14 @@ const updateParticipantResults = async (req, res) => {
   }
 };
 
-const getTournamentTeams = async (req, res) => {
+exports.getTournamentTeams = async (req, res) => {
   try {
-    const participants = await Participant.findAll({
-      where: {
-        tournamentId: req.params.id,
-        teamId: { [Sequelize.Op.not]: null },
-      },
-      include: [
-        {
-          model: Team,
-          include: [
-            {
-              model: User,
-              as: "members",
-              attributes: ["id", "username", "email"],
-              through: { attributes: [] },
-            },
-            {
-              model: User,
-              as: "captain",
-              attributes: ["id", "username", "email"],
-            },
-          ],
-        },
-      ],
-    });
+    const participants = await Participant.find({
+      tournamentId: req.params.id,
+      teamId: { $ne: null },
+    }).populate("teamId");
     res.json(participants);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
-
-module.exports = {
-  getAllTournaments,
-  getTournamentById,
-  getTournamentParticipants,
-  createTournament,
-  joinTournament,
-  updateParticipantResults,
-  getTournamentTeams,
 };

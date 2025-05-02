@@ -1,20 +1,19 @@
-const { DataTypes } = require("sequelize");
+const mongoose = require("mongoose");
 
-module.exports = (sequelize) => {
-  const User = sequelize.define("User", {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    username: { type: DataTypes.STRING, allowNull: false, unique: true },
-    email: { type: DataTypes.STRING, allowNull: false, unique: true },
-    password: { type: DataTypes.STRING, allowNull: false },
-    role: { type: DataTypes.ENUM("user", "admin"), defaultValue: "user" },
-  });
+const userSchema = new mongoose.Schema({
+  username: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  role: { type: String, enum: ["user", "admin"], default: "user" },
+});
 
-  // Add associations with cascade
-  User.associate = (models) => {
-    User.hasMany(models.Participant, {
-      foreignKey: "userId",
-      onDelete: "CASCADE",
-    });
-  };
-  return User;
-};
+userSchema.set("toJSON", {
+  virtuals: true,
+  versionKey: false,
+  transform: (_, ret) => {
+    ret.id = ret._id;
+    delete ret._id;
+  },
+});
+
+module.exports = mongoose.model("User", userSchema);

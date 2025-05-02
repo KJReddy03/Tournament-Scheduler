@@ -38,6 +38,7 @@ const TournamentDetails = () => {
     }
     try {
       await dispatch(joinTournament(id));
+      await dispatch(fetchTournamentDetails(id));
     } catch (error) {
       console.error("Join failed:", error);
     }
@@ -58,8 +59,7 @@ const TournamentDetails = () => {
       }
 
       alert("Successfully joined tournament as team!");
-      // Refresh tournament data
-      dispatch(fetchTournamentDetails(id));
+      await dispatch(fetchTournamentDetails(id));
     } catch (error) {
       console.error("Team join failed:", error);
 
@@ -76,11 +76,11 @@ const TournamentDetails = () => {
     }
   };
 
-  const isParticipant = currentTournament?.Participants?.some(
-    (p) =>
-      p.userId === user?.id ||
-      (p.teamId && userTeams.some((t) => t.id === p.teamId))
-  );
+  const isParticipant = currentTournament?.participants?.some((p) => {
+    const participantUserId =
+      typeof p.userId === "object" ? p.userId.id || p.userId._id : p.userId;
+    return participantUserId === user?.id;
+  });
 
   return (
     <div className="page-container">
@@ -204,29 +204,36 @@ const TournamentDetails = () => {
                       </div>
                     )}
                     {isParticipant && (
-                      <div className="alert alert-info">
-                        You're already registered for this tournament
-                      </div>
+                      <button
+                        onClick={handleJoin}
+                        className="btn btn-primary btn-joined"
+                        disabled
+                      >
+                        {loading ? "Joining..." : "Joined"}
+                      </button>
                     )}
                   </div>
                 </div>
 
                 <h3 className="part">Participants</h3>
                 <ul className="list-group">
-                  {currentTournament.Participants?.length > 0 ? (
-                    currentTournament.Participants.map((participant) => (
+                  {currentTournament.participants?.length > 0 ? (
+                    currentTournament.participants.map((participant) => (
                       <li key={participant.id} className="list-group-item">
                         {participant.teamId ? (
                           <>
-                            <span>Team: {participant.Team?.name} </span>
+                            <span>Team: {participant.teamId.name} </span>
                             <span>
-                              (Captain: {participant.Team?.captain?.username}){" "}
+                              (Captain:{" "}
+                              {participant.teamId.captainId?.username ||
+                                "Unknown"}
+                              )
                             </span>
                           </>
                         ) : (
                           <>
-                            <span>User: {participant.User?.username} </span>
-                            <span>({participant.User?.email}) </span>
+                            <span>User: {participant.userId?.username} </span>
+                            <span>({participant.userId?.email}) </span>
                           </>
                         )}
                         <span>Status: {participant.status} </span>

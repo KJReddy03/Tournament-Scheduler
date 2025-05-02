@@ -1,22 +1,21 @@
-const { Participant } = require("../config/db.config");
+const Participant = require("../models/Participant.model");
 
 async function findByUserAndTournament(userId, tournamentId) {
-  return await Participant.findOne({
-    where: { userId, tournamentId },
-  });
+  return await Participant.findOne({ userId, tournamentId });
 }
 
 async function joinTournament(data) {
-  return await Participant.create(data);
+  const participant = new Participant(data);
+  return await participant.save();
 }
 
 async function updateParticipant(id, data) {
-  return await Participant.update(data, { where: { id } });
+  return await Participant.findByIdAndUpdate(data, { id });
 }
 
 async function findByTournament(tournamentId) {
-  return await Participant.findAll({
-    where: { tournamentId },
+  return await Participant.find({
+    tournamentId,
   });
 }
 

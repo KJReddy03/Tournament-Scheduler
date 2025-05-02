@@ -1,17 +1,27 @@
-const { DataTypes } = require("sequelize");
+const mongoose = require("mongoose");
 
-module.exports = (sequelize) => {
-  const Tournament = sequelize.define("Tournament", {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    name: { type: DataTypes.STRING, allowNull: false },
-    game: { type: DataTypes.STRING, allowNull: false },
-    image: { type: DataTypes.STRING, allowNull: true },
-    startDate: { type: DataTypes.DATE, allowNull: false },
-    endDate: { type: DataTypes.DATE, allowNull: false },
-    maxParticipants: { type: DataTypes.INTEGER, allowNull: false },
-    status: { type: DataTypes.STRING, defaultValue: "upcoming" },
-    creatorId: { type: DataTypes.INTEGER, allowNull: false },
-  });
+const tournamentSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  game: { type: String, required: true },
+  image: { type: String },
+  startDate: { type: Date, required: true },
+  endDate: { type: Date, required: true },
+  maxParticipants: { type: Number, required: true },
+  status: { type: String, default: "upcoming" },
+  creatorId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+});
 
-  return Tournament;
-};
+tournamentSchema.set("toJSON", {
+  virtuals: true,
+  versionKey: false,
+  transform: (_, ret) => {
+    ret.id = ret._id;
+    delete ret._id;
+  },
+});
+
+module.exports = mongoose.model("Tournament", tournamentSchema);

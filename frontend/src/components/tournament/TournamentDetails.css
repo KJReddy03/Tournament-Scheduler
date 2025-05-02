@@ -125,3 +125,7 @@
   transition: all 0.3s ease;
   width: 200px;
 }
+.btn.btn-primary.btn-joined:hover {
+  cursor: not-allowed;
+  background-color: rgba(135, 66, 66, 0.712);
+}

@@ -1,12 +1,16 @@
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
-const { sequelize } = require("./config/db.config");
+const connectDB = require("./config/db.config");
 const authRoutes = require("./routes/auth.routes");
 const tournamentRoutes = require("./routes/tournament.routes");
 const adminRoutes = require("./routes/admin.routes");
-const app = express();
 const teamRoutes = require("./routes/team.routes");
+const userRoutes = require("./routes/user.routes");
+
+const app = express();
+
+connectDB();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -21,15 +25,10 @@ app.use(
 );
 
 // Routes
-app.use("/api/users", require("./routes/user.routes"));
+app.use("/api/users", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/tournaments", tournamentRoutes);
 app.use("/api/teams", teamRoutes);
-
-// Database sync
-sequelize.sync({ force: false, alter: false }).then(() => {
-  console.log("Database synced successfully");
-});
 
 module.exports = app;

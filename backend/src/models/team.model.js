@@ -1,23 +1,29 @@
-const { DataTypes } = require("sequelize");
+const mongoose = require("mongoose");
 
-module.exports = (sequelize) => {
-  const Team = sequelize.define("Team", {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    name: { type: DataTypes.STRING, allowNull: false, unique: true },
-    captainId: { type: DataTypes.INTEGER, allowNull: false },
-  });
+const teamSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true, unique: true },
+    captainId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    members: {
+      type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+      required: true,
+      default: [],
+    },
+  },
+  { timestamps: true }
+);
 
-  Team.associate = (models) => {
-    Team.belongsTo(models.User, {
-      as: "captain",
-      foreignKey: "captainId",
-    });
-    Team.belongsToMany(models.User, {
-      through: "TeamUsers",
-      as: "members",
-      foreignKey: "teamId",
-    });
-  };
+teamSchema.set("toJSON", {
+  virtuals: true,
+  versionKey: false,
+  transform: (_, ret) => {
+    ret.id = ret._id;
+    delete ret._id;
+  },
+});
 
-  return Team;
-};
+module.exports = mongoose.model("Team", teamSchema);

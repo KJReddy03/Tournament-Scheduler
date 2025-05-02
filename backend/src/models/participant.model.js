@@ -1,17 +1,28 @@
-const { DataTypes } = require("sequelize");
+const mongoose = require("mongoose");
 
-module.exports = (sequelize) => {
-  const Participant = sequelize.define("Participant", {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    userId: { type: DataTypes.INTEGER, allowNull: false },
-    tournamentId: { type: DataTypes.INTEGER, allowNull: false },
-    teamId: { type: DataTypes.INTEGER, allowNull: true },
-    status: {
-      type: DataTypes.ENUM("registered", "active", "eliminated", "winner"),
-      defaultValue: "registered",
-    },
-    score: { type: DataTypes.INTEGER, defaultValue: 0 },
-  });
+const participantSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  tournamentId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Tournament",
+    required: true,
+  },
+  teamId: { type: mongoose.Schema.Types.ObjectId, ref: "Team" },
+  status: {
+    type: String,
+    enum: ["registered", "active", "eliminated", "winner"],
+    default: "registered",
+  },
+  score: { type: Number, default: 0 },
+});
 
-  return Participant;
-};
+participantSchema.set("toJSON", {
+  virtuals: true,
+  versionKey: false,
+  transform: (_, ret) => {
+    ret.id = ret._id;
+    delete ret._id;
+  },
+});
+
+module.exports = mongoose.model("Participant", participantSchema);
