@@ -34,14 +34,14 @@ const Navbar = () => {
           <ul className="navbar-nav me-auto">
             <li className="nav-item">
               <Link className="navbar-brand navTitle" to="/">
-                🎮Tournament Scheduler
+                <i className="fa-solid fa-gamepad"></i>Tournament Scheduler
               </Link>
             </li>
           </ul>
           <ul className="link-content">
             <li className="nav-item">
               <Link className="nav-link" to="/">
-                Home
+                <i className="fa-solid fa-house"></i>
               </Link>
             </li>
             {isAuthenticated && (
@@ -82,7 +82,7 @@ const Navbar = () => {
                     className="btn-outline-light btn dropdown-toggle"
                     onClick={() => setOpen(!open)}
                   >
-                    {user?.username.charAt(0).toUpperCase()}
+                    <i className="fa-regular fa-user"></i>{" "}
                   </button>
                   {open && (
                     <div className="dropdown-menu show-dropdown">
@@ -122,7 +122,8 @@ const Navbar = () => {
                               setOpen(false);
                             }}
                           >
-                            Logout
+                            Logout{" "}
+                            <i className="fa-solid fa-right-from-bracket"></i>
                           </button>
                         </li>
                       </ul>

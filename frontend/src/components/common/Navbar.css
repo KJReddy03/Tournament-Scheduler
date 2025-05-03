@@ -70,7 +70,7 @@
 
 .btn.btn-outline-light {
   border-radius: 50%;
-  padding: 10px 15px;
+  padding: 10px 10px;
   transition: all 0.3s ease;
   background: var(--primary);
   border-color: var(--primary);
@@ -133,4 +133,14 @@
 }
 li {
   list-style-type: none;
+}
+.fa-user {
+  font-size: 20px;
+}
+.fa-right-from-bracket {
+  padding: 0 5px;
+}
+.fa-gamepad {
+  font-size: 20px;
+  padding-right: 10px;
 }

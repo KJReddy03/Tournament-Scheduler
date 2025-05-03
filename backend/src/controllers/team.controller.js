@@ -221,7 +221,7 @@ exports.removeTeamMember = async (req, res) => {
     team.members = team.members.filter((id) => id.toString() !== userId);
     await team.save();
 
-    await TeamUser.deleteOne({ teamId, userId }); // ✅ Remove TeamUser mapping
+    await TeamUser.deleteOne({ teamId, userId });
 
     res.json({ success: true, message: "Member removed" });
   } catch (error) {
