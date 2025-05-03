@@ -144,3 +144,37 @@ li {
   font-size: 20px;
   padding-right: 10px;
 }
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: auto;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 4px;
+  padding: 4px 8px;
+  position: absolute;
+  z-index: 1;
+  top: 120%; /* Position it just below the icon */
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+.navele {
+  font-size: 20px;
+}
+.dropdown {
+  margin: 0 10px;
+}

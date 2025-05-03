@@ -39,36 +39,41 @@ const Navbar = () => {
             </li>
           </ul>
           <ul className="link-content">
-            <li className="nav-item">
+            <li className="nav-item  tooltip-container">
               <Link className="nav-link" to="/">
-                <i className="fa-solid fa-house"></i>
+                <i className="navele fa-solid fa-house"></i>
+                <span className="tooltip-text">Home</span>
               </Link>
             </li>
             {isAuthenticated && (
               <>
-                <li className="nav-item">
+                <li className="nav-item tooltip-container">
                   <Link className="nav-link" to="/tournaments">
-                    Tournaments
+                    <i className="navele fa-solid fa-trophy"></i>
+                    <span className="tooltip-text">Tournaments</span>
                   </Link>
                 </li>
                 {user?.role === "admin" && (
                   <>
-                    <li className="nav-item">
+                    <li className="nav-item tooltip-container">
                       <Link className="nav-link" to="/tournaments/create">
-                        Create
+                        <i className="navele fa-solid fa-square-plus"></i>
+                        <span className="tooltip-text">Create</span>
                       </Link>
                     </li>
-                    <li className="nav-item">
+                    <li className="nav-item tooltip-container">
                       <Link className="nav-link" to="/admin">
-                        Admin Dashboard
+                        <i className="navele fa-solid fa-user-tie"></i>
+                        <span className="tooltip-text">Admin Dashboard</span>
                       </Link>
                     </li>
-                    <li className="nav-item">
+                    <li className="nav-item tooltip-container">
                       <Link
                         className="nav-link"
                         to="/tournaments/update-results"
                       >
-                        Update Results
+                        <i className="navele fa-solid fa-pen-to-square"></i>
+                        <span className="tooltip-text">Update Results</span>
                       </Link>
                     </li>
                   </>
@@ -135,12 +140,7 @@ const Navbar = () => {
               <>
                 <li className="nav-item">
                   <Link className="nav-link" to="/login">
-                    Login
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/register">
-                    Register
+                    Login/Register
                   </Link>
                 </li>
               </>
