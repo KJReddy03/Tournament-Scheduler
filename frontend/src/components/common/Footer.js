@@ -7,9 +7,21 @@ const Footer = () => {
       <div className="container">
         <h3 className="conTitle">Contact:</h3>
         <p className="contact">
-          <a href="mailto:keerthanreddy.j139@ptuniv.edu.in">mail</a>
-          <a href="https://github.com/KJReddy03">github</a>
-          <a href="https://www.instagram.com/keerthan.reddy.j/">instagram</a>
+          <a
+            href="mailto:keerthanreddy.j139@ptuniv.edu.in"
+            className="tooltip-container"
+          >
+            <i class="foot-list fa-solid fa-envelope"></i>
+          </a>
+          <a href="https://github.com/KJReddy03" className="tooltip-container">
+            <i class="foot-list fa-brands fa-github"></i>
+          </a>
+          <a
+            href="https://www.instagram.com/keerthan.reddy.j/"
+            className="tooltip-container"
+          >
+            <i className="foot-list fa-brands fa-instagram"></i>
+          </a>
         </p>
       </div>
     </footer>

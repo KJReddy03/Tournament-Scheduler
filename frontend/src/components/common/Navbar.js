@@ -84,10 +84,11 @@ const Navbar = () => {
               <>
                 <li className="nav-item dropdown" ref={dropdownRef}>
                   <button
-                    className="btn-outline-light btn dropdown-toggle"
+                    className="btn-outline-light btn dropdown-toggle tooltip-container"
                     onClick={() => setOpen(!open)}
                   >
                     <i className="fa-regular fa-user"></i>{" "}
+                    <span className="tooltip-text"> User Dropdown</span>
                   </button>
                   {open && (
                     <div className="dropdown-menu show-dropdown">
