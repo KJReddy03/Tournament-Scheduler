@@ -75,7 +75,7 @@ const AdminDashboard = () => {
           ) : (
             <table className="custom-table">
               <thead>
-                <tr>
+                <tr className="table-heading">
                   <th>ID</th>
                   <th>Username</th>
                   <th>Email</th>
@@ -85,7 +85,7 @@ const AdminDashboard = () => {
               </thead>
               <tbody>
                 {users.map((user) => (
-                  <tr key={user.id}>
+                  <tr key={user.id} className="table-data">
                     <td>{user.id}</td>
                     <td>{user.username}</td>
                     <td>{user.email}</td>
@@ -119,7 +119,7 @@ const AdminDashboard = () => {
           </div>
           <table className="custom-table">
             <thead>
-              <tr>
+              <tr className="table-heading">
                 <th>ID</th>
                 <th>Name</th>
                 <th>Game</th>
@@ -130,7 +130,7 @@ const AdminDashboard = () => {
             </thead>
             <tbody>
               {tournaments.map((tournament) => (
-                <tr key={tournament.id}>
+                <tr key={tournament.id} className="table-data">
                   <td>{tournament.id}</td>
                   <td>{tournament.name}</td>
                   <td>{tournament.game}</td>

@@ -219,7 +219,7 @@ const TournamentDetails = () => {
                 <ul className="list-group">
                   {currentTournament.participants?.length > 0 ? (
                     currentTournament.participants.map((participant) => (
-                      <li key={participant.id} className="list-group-item">
+                      <li key={participant.id} className="list-group-item two">
                         {participant.teamId ? (
                           <>
                             <span>Team: {participant.teamId.name} </span>
@@ -241,7 +241,7 @@ const TournamentDetails = () => {
                       </li>
                     ))
                   ) : (
-                    <li className="list-group-item">No participants yet</li>
+                    <li className="list-group-item two">No participants yet</li>
                   )}
                 </ul>
               </div>

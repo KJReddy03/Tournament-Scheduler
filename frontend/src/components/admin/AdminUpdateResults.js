@@ -29,7 +29,7 @@ const AdminUpdateResults = () => {
           <Link
             key={tournament.id}
             to={`/tournaments/${tournament.id}/update`}
-            className="list-group-item list-group-item-action"
+            className="list-group-item list-group-item-action one"
           >
             {tournament.name} ({tournament.game})
           </Link>

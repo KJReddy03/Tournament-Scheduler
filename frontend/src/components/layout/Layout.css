@@ -2,6 +2,10 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background 0.5s ease;
 }
 
 .layout-main-content {
@@ -9,10 +13,47 @@
   display: flex;
   justify-content: center;
   padding: 2rem 1rem;
+  padding-top: 90px;
 }
 
 .content-wrapper {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+}
+.home-bg {
+  background-image: url("./images/Gate.jpg");
+}
+
+.login-bg {
+  background-image: url("./images/Login.png");
+}
+
+.register-bg {
+  background-image: url("./images/Login.png");
+}
+
+.tournament-bg {
+  background-image: url("./images/tournaments.png");
+}
+
+.admin-bg {
+  background-image: url("./images/admin.png");
+}
+.create-bg {
+  background-image: url("./images/Create.png");
+}
+
+.team-bg {
+  background-image: url("./images/team.png");
+}
+.result-bg {
+  background-image: url("./images/updateResult.png");
+}
+
+.default-bg {
+  background-color: white;
+}
+.welcome-bg {
+  background-image: url("./images/itachi.png");
 }

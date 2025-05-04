@@ -93,7 +93,7 @@ a:hover {
 .btn-primary {
   background-color: var(--primary);
   border-color: var(--primary);
-  /* color: white; */
+  color: white;
 }
 
 .btn-primary:hover {

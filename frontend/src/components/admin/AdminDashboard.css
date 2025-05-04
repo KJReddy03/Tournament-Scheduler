@@ -1,7 +1,8 @@
 .admin-container {
   padding: 1.3rem;
   font-family: Arial, sans-serif;
-  background-color: var(--light);
+  background-color: rgba(247, 246, 246, 0.474);
+  backdrop-filter: blur(10px);
   border-radius: 5px;
   box-shadow: 5px 5px 20px rgb(57, 54, 54);
 }
@@ -129,4 +130,10 @@
   padding: 20px;
   background-color: #f8d7da;
   border-radius: 5px;
+}
+.table-data {
+  color: black;
+}
+.table-heading {
+  color: var(--primary);
 }

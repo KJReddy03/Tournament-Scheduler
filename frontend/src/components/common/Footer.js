@@ -11,10 +11,10 @@ const Footer = () => {
             href="mailto:keerthanreddy.j139@ptuniv.edu.in"
             className="tooltip-container"
           >
-            <i class="foot-list fa-solid fa-envelope"></i>
+            <i className="foot-list fa-solid fa-envelope"></i>
           </a>
           <a href="https://github.com/KJReddy03" className="tooltip-container">
-            <i class="foot-list fa-brands fa-github"></i>
+            <i className="foot-list fa-brands fa-github"></i>
           </a>
           <a
             href="https://www.instagram.com/keerthan.reddy.j/"

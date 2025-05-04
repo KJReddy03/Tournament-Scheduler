@@ -9,7 +9,9 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [showNavbar, setShowNavbar] = useState(true);
   const dropdownRef = useRef(null);
+  const prevScrollY = useRef(0);
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -27,8 +29,32 @@ const Navbar = () => {
     };
   }, []);
 
+  // Scroll behavior to show/hide navbar
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > prevScrollY.current) {
+        // Scrolling down
+        setShowNavbar(false);
+      } else {
+        // Scrolling up
+        setShowNavbar(true);
+      }
+
+      prevScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav
+      className={`navbar navbar-expand-lg navbar-dark bg-dark ${
+        showNavbar ? "show" : "hide"
+      }`}
+    >
       <div className="container">
         <div className="collapse navbar-collapse">
           <ul className="navbar-nav me-auto">
@@ -88,7 +114,7 @@ const Navbar = () => {
                     onClick={() => setOpen(!open)}
                   >
                     <i className="fa-regular fa-user"></i>{" "}
-                    <span className="tooltip-text"> User Dropdown</span>
+                    <span className="tooltip-text"> User</span>
                   </button>
                   {open && (
                     <div className="dropdown-menu show-dropdown">

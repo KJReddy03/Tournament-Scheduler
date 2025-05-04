@@ -52,7 +52,7 @@
 
 .list-group-item {
   background-color: rgba(85, 85, 85, 0.249);
-  color: rgb(39, 38, 38);
+  color: rgb(255, 255, 255);
   border: 1px solid rgba(108, 92, 231, 0.2);
   margin-bottom: 10px;
   border-radius: 10px !important;
@@ -63,7 +63,12 @@
   padding-left: 10px;
   padding-right: 10px;
 }
-
+.one {
+  color: rgb(255, 255, 255);
+}
+.two {
+  color: rgb(60, 60, 60);
+}
 .list-group-item:hover {
   background-color: rgba(108, 92, 231, 0.1);
   transform: translateX(5px);

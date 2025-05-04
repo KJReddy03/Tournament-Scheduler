@@ -1,5 +1,5 @@
 .foot {
-  background-color: var(--light); /* White */
+  background-color: rgba(255, 255, 255, 0.455); /* White */
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--medium-gray);
   padding: 25px 0;

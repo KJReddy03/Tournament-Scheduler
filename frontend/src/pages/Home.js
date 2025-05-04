@@ -10,7 +10,7 @@ const Home = () => {
     <div className="container mt-5">
       <div className="hexa jumbotron text-center">
         <h1 className="display-4">Welcome to Tournament Scheduler</h1>
-        <p className="lead">
+        <p className="lead1">
           Organize and participate in gaming tournaments with ease
         </p>
         <hr className="my-4" />
