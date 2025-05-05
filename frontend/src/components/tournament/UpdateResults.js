@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom"; //useNavigate,
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchTournamentDetails,
@@ -10,7 +10,7 @@ import "./UpdateResults.css";
 const UpdateResults = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const formRef = useRef(null);
   const { currentTournament, loading, error } = useSelector(
     (state) => state.tournaments

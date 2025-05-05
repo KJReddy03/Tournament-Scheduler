@@ -8,8 +8,11 @@
 }
 
 .create-tournament-form .card-header {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  color: white;
+  background: linear-gradient(
+    135deg,
+    rgba(105, 90, 205, 0.6),
+    rgba(72, 209, 205, 0.6)
+  );
   padding: 20px;
   text-align: center;
   border-bottom: none;
