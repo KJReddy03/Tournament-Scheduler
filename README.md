@@ -24,7 +24,7 @@ A full-featured web application to create, manage, and track gaming tournaments.
 - React.js
 - Node.js
 - Express.js
-- MongoDB / MySQL
+- MongoDB
 - CSS / Styled Components
 
 
