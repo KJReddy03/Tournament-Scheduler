@@ -1,4 +1,4 @@
-# Tournament-Scheduler
+# Tournament-Scheduler(MERN)
  # Gaming Tournament Scheduler 🎮🏆
 
 A full-featured web application to create, manage, and track gaming tournaments. Organizers can register tournaments, manage participants, and declare winners with ease.
